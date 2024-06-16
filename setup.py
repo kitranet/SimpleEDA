@@ -8,7 +8,7 @@ HERE = pathlib.Path(__file__).parent
 README = (HERE / "README.md").read_text()
 
 setup(
-    name='SimpleEDA',
+    name='SimplyEDA',
     version='0.1.0',
     description='A simple library for exploratory data analysis',
     long_description=README,
