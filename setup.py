@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 import pathlib
 
 # The directory containing this file
@@ -16,7 +16,7 @@ setup(
     url='https://github.com/kitranet/SimpleEDA',  # This URL remains the same
     author='M.R.Vijay Krishnan',
     author_email='vijaykrishnanmr@gmail.com',
-    py_modules=['SimplyEDA'],
+    py_modules=['SimplyEDA'],  # Specify the module here
     install_requires=[
         'seaborn',
         'matplotlib',
