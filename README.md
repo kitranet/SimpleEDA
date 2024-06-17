@@ -1,7 +1,7 @@
 
 # SimplyEDA
 
-SimpleEDA is a Python library for simple exploratory data analysis tasks. It provides functions to handle outliers, find special characters, calculate Variance Inflation Factor (VIF), detect duplicates, and visualize continuous data using box plots.
+SimplyEDA is a Python library for simple exploratory data analysis tasks. It provides functions to handle outliers, find special characters, calculate Variance Inflation Factor (VIF), detect duplicates, and visualize continuous data using box plots.
 
 ## Installation
 
@@ -104,10 +104,10 @@ eda.boxplt_continous(df)
 
 ## Example
 
-Here's a complete example of using SimpleEDA with a sample DataFrame:
+Here's a complete example of using SimplyEDA with a sample DataFrame:
 
 ```python
-import SimpleEDA as eda
+import SimplyEDA as eda
 import pandas as pd
 
 # Sample DataFrame
