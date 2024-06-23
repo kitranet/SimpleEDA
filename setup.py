@@ -8,15 +8,15 @@ HERE = pathlib.Path(__file__).parent
 README = (HERE / "README.md").read_text()
 
 setup(
-    name='SimplyEDA',  # Ensure this name is unique on PyPI
-    version='0.1.4',
+    name='SimplyEDA',
+    version='0.1.5',  # Update the version number
     description='A simple library for exploratory data analysis',
     long_description=README,
     long_description_content_type='text/markdown',
-    url='https://github.com/kitranet/SimpleEDA',  # This URL remains the same
+    url='https://github.com/kitranet/SimpleEDA',
     author='M.R.Vijay Krishnan',
     author_email='vijaykrishnanmr@gmail.com',
-    py_modules=['SimplyEDA'],  # Specify the module here
+    py_modules=['SimplyEDA'],
     install_requires=[
         'seaborn',
         'matplotlib',

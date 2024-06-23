@@ -1,9 +1,9 @@
 import unittest
 import pandas as pd
 import numpy as np
-from SimpleEDA import remove_outlier, find_specialchar, vif_cal, dups, boxplt_continous
+from SimplyEDA import remove_outlier, find_specialchar, vif_cal, dups, boxplt_continous, enhance_summary
 
-class TestSimpleEDA(unittest.TestCase):
+class TestSimplyEDA(unittest.TestCase):
 
     def setUp(self):
         # Setup a sample DataFrame for testing
@@ -34,7 +34,8 @@ class TestSimpleEDA(unittest.TestCase):
         from statsmodels.stats.outliers_influence import variance_inflation_factor
         # Check if function runs without error
         try:
-            vif_cal(self.df[['A', 'B', 'C']])
+            vif = vif_cal(self.df[['A', 'B', 'C']])
+            self.assertIsInstance(vif, pd.DataFrame)
         except Exception as e:
             self.fail(f"vif_cal raised Exception unexpectedly: {e}")
 
@@ -57,6 +58,20 @@ class TestSimpleEDA(unittest.TestCase):
             boxplt_continous(self.df[['A', 'B', 'C']])
         except Exception as e:
             self.fail(f"boxplt_continous raised Exception unexpectedly: {e}")
+
+    def test_enhance_summary(self):
+        summary = enhance_summary(self.df, custom_percentiles=[5, 95])
+        self.assertIsInstance(summary, pd.DataFrame)
+        self.assertIn('IQR', summary.columns)
+        self.assertIn('LW', summary.columns)
+        self.assertIn('UW', summary.columns)
+        self.assertIn('Outliers', summary.columns)
+        self.assertIn('Duplicates', summary.columns)
+        self.assertIn('Missing', summary.columns)
+        self.assertIn('Skew', summary.columns)
+        self.assertIn('Skew_Category', summary.columns)
+        self.assertIn('5%', summary.columns)
+        self.assertIn('95%', summary.columns)
 
 if __name__ == '__main__':
     unittest.main()
