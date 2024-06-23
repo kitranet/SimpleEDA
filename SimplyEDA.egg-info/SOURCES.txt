@@ -1,6 +1,7 @@
 LICENSE
 README.md
 SimplyEDA.py
+git
 setup.py
 SimplyEDA.egg-info/PKG-INFO
 SimplyEDA.egg-info/SOURCES.txt

@@ -1,14 +1,14 @@
 
-# SimplyEDA
+# SimpleEDA
 
-SimplyEDA is a Python library for simple exploratory data analysis tasks. It provides functions to handle outliers, find special characters, calculate Variance Inflation Factor (VIF), detect duplicates, and visualize continuous data using box plots.
+SimpleEDA is a Python library for simple exploratory data analysis tasks. It provides functions to handle outliers, find special characters, calculate Variance Inflation Factor (VIF), detect duplicates, and visualize continuous data using box plots.
 
 ## Installation
 
-You can install SimplyEDA via pip:
+You can install SimpleEDA via pip:
 
 ```bash
-pip install SimplyEDA
+pip install SimpleEDA
 ```
 
 ## Usage
@@ -18,7 +18,7 @@ Below are examples of how to use the various functions provided by SimpleEDA.
 ### Importing the Library
 
 ```python
-import SimplyEDA as eda
+import SimpleEDA as eda
 import pandas as pd
 
 # Sample DataFrame
@@ -104,10 +104,10 @@ eda.boxplt_continous(df)
 
 ## Example
 
-Here's a complete example of using SimplyEDA with a sample DataFrame:
+Here's a complete example of using SimpleEDA with a sample DataFrame:
 
 ```python
-import SimplyEDA as eda
+import SimpleEDA as eda
 import pandas as pd
 
 # Sample DataFrame
@@ -134,7 +134,56 @@ eda.dups(df)
 # Plot boxplots for continuous features
 eda.boxplt_continous(df)
 ```
+### enhance_summary
+Provides an enhanced summary of a pandas DataFrame, including custom percentiles, IQR, outliers, duplicates, missing values, and skewness. It also handles both numerical and categorical variables.
+```python
+summary = eda.enhance_summary(df, custom_percentiles=[5, 95])
+print(summary)
+```
+### Parameters:
 
+dataframe (pd.DataFrame): The DataFrame to summarize.
+custom_percentiles (list, optional): A list of custom percentiles to include in the summary.
+### Returns:
+
+pd.DataFrame: DataFrame containing the enhanced summary statistics.
+## Example
+Here's a complete example of using SimplyEDA with a sample DataFrame:
+
+```python
+import SimplyEDA as eda
+import pandas as pd
+
+# Sample DataFrame
+df = pd.DataFrame({
+    'A': [1, 2, 2, 4, 5, 6, 7, 8, 9, 10],
+    'B': [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+    'C': [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+    'D': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
+})
+
+# Remove outliers
+lower, upper = eda.remove_outlier(df['A'])
+print(f"Lower bound: {lower}, Upper bound: {upper}")
+
+# Find special characters
+eda.find_specialchar(df)
+
+# Calculate VIF
+vif = eda.vif_cal(df[['A', 'B', 'C']])
+print(vif)
+
+# Detect duplicates
+eda.dups(df)
+
+# Plot boxplots for continuous features
+eda.boxplt_continous(df)
+
+# Enhanced summary
+summary = eda.enhance_summary(df, custom_percentiles=[5, 95])
+print(summary)
+
+```
 ## Author
 
 This project was created by M.R.Vijay Krishnan. You can reach me at [vijaykrishnanmr@gmail.com](mailto:vijaykrishnanmr@gmail.com).

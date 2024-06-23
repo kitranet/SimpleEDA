@@ -9,7 +9,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name='SimplyEDA',
-    version='0.1.5',  # Update the version number
+    version='0.1.6',  # Update the version number
     description='A simple library for exploratory data analysis',
     long_description=README,
     long_description_content_type='text/markdown',
