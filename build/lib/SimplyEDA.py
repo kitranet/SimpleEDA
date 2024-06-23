@@ -40,12 +40,24 @@ def boxplt_continous(dataframe):
         plt.show()
 
 def enhance_summary(dataframe, custom_percentiles=[]):
+    # Ensure required percentiles are included
+    required_percentiles = [0.25, 0.75]
+    all_percentiles = sorted(set(required_percentiles + [p / 100 for p in custom_percentiles]))
+
     # Summary for numerical columns
-    numeric_summary = dataframe.describe(percentiles=[p/100 for p in custom_percentiles]).T
+    numeric_summary = dataframe.describe(percentiles=all_percentiles).T
     numeric_summary['IQR'] = numeric_summary['75%'] - numeric_summary['25%']
     numeric_summary['LW'] = numeric_summary['25%'] - 1.5 * numeric_summary['IQR']
     numeric_summary['UW'] = numeric_summary['75%'] + 1.5 * numeric_summary['IQR']
 
+    # Add custom percentiles
+    for percentile in custom_percentiles:
+        col_name = f'{percentile}%'
+        for column in dataframe.select_dtypes(include=np.number).columns:
+            value = np.nanpercentile(dataframe[column], percentile)
+            numeric_summary.loc[column, col_name] = value
+
+    # Calculate and add the count of outliers
     for column in dataframe.select_dtypes(include=np.number).columns:
         lower_range = numeric_summary.loc[column, 'LW']
         upper_range = numeric_summary.loc[column, 'UW']
@@ -53,35 +65,26 @@ def enhance_summary(dataframe, custom_percentiles=[]):
         num_outliers = np.sum(outliers)
         numeric_summary.loc[column, 'Outliers'] = num_outliers
 
-    # Summary for categorical columns
-    categorical_summary = dataframe.describe(include=['O']).T
-    categorical_summary['Unique'] = dataframe.select_dtypes(include=['O']).nunique()
-    categorical_summary['Top'] = dataframe.select_dtypes(include=['O']).mode().iloc[0]
-    categorical_summary['Freq'] = dataframe.apply(lambda x: x.value_counts().iloc[0] if x.dtype == 'O' else np.nan)
-
-    # Combine numerical and categorical summaries
-    summary = pd.concat([numeric_summary, categorical_summary], axis=0, sort=False)
-    
     # Add the number of duplicates and missing values
     for column in dataframe.columns:
-        summary.loc[column, 'Duplicates'] = dataframe[column].duplicated().sum()
-        summary.loc[column, 'Missing'] = dataframe[column].isnull().sum()
+        numeric_summary.loc[column, 'Duplicates'] = dataframe[column].duplicated().sum()
+        numeric_summary.loc[column, 'Missing'] = dataframe[column].isnull().sum()
 
-    # Add skewness column and skewness category column for numerical columns
+    # Add skewness column and skewness category column
     for column in dataframe.select_dtypes(include=np.number).columns:
         skew_value = dataframe[column].skew()
-        summary.loc[column, 'Skew'] = round(skew_value, 2)
+        numeric_summary.loc[column, 'Skew'] = round(skew_value, 2)
 
         if skew_value >= 1:
-            summary.loc[column, 'Skew_Category'] = 'Positive'
+            numeric_summary.loc[column, 'Skew_Category'] = 'Positive'
         elif skew_value <= -1:
-            summary.loc[column, 'Skew_Category'] = 'Negative'
+            numeric_summary.loc[column, 'Skew_Category'] = 'Negative'
         elif -0.5 <= skew_value <= 0.5:
-            summary.loc[column, 'Skew_Category'] = 'Normal'
+            numeric_summary.loc[column, 'Skew_Category'] = 'Normal'
         else:
-            summary.loc[column, 'Skew_Category'] = 'Undefined'
+            numeric_summary.loc[column, 'Skew_Category'] = 'Undefined'
 
-    return summary
+    return numeric_summary
 
 # Example usage
 if __name__ == "__main__":
